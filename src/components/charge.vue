@@ -258,7 +258,7 @@ export default {
                 }else{
                     that.loading = false;
                     this.$message({
-                        message: '就诊卡号有误',
+                        message: '就诊卡号有误,或者未开具处方单',
                         type: 'error'
                     });
                 }
@@ -320,6 +320,7 @@ export default {
                           'userInfo':that.tableData,
                           'drugData':that.drugData
                       };
+                      userInfo = JSON.parse(userInfo);
                       userInfo.data.push(tp);
                       localStorage.setItem('userInfo',JSON.stringify(userInfo));
                   }
