@@ -11,43 +11,26 @@
                     <h1>医师发药系统</h1>
                 </el-col>
             </el-row>
-            <!-- <el-row>
-                <el-col :span="24" class="tips">
-                    <span>请输入员工账号：</span>
-                </el-col>
-            </el-row> -->
             <el-form ref="form" :model="form" :rules="rules" @submit.native.prevent>
-<!--                账号-->
                 <el-row>
                     <el-col :span="20" :offset="2">
-                        <el-form-item prop="cardNumber">
-                            <el-input type="text" placeholder="请输入职工账号" v-model="form.cardNumber"></el-input>
+                        <el-form-item prop="userName">
+                            <el-input type="text" placeholder="请输入用户名" v-model="form.userName"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-<!--密码-->
                 <el-row>
                     <el-col :span="20" :offset="2">
-                        <el-form-item prop="passWord">
-                            <el-input placeholder="请输入密码" v-model="form.passWord" show-password></el-input>
+                        <el-form-item prop="userPass">
+                            <el-input type="password" placeholder="请输入密码" v-model="form.userPass"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-
-
-
-
-
                 <el-row>
                     <el-col :span="20" :offset="2">
                         <el-form-item>
-                            <el-button type="primary" class="my-btn-submit" @click="login('form')">点此登陆</el-button>
+                            <el-button type="primary" class="my-btn-submit" @click="login('form')">登录</el-button>
                         </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="20" :offset="2" class="link-to">
-<!--                        <router-link to="/OutPatient/register">没有卡号？注册就诊卡</router-link>-->
                     </el-col>
                 </el-row>
             </el-form>
@@ -80,14 +63,55 @@
             Bus.$emit('employeePwd',this.form.passWord);
         },
         methods:{
+
+            //
+            // login:function(formName){
+            //     this.$refs[formName].validate((valid) => {
+            //         if(valid){
+            //             //验证通过
+            //             //构造请求的url
+            //             var url = 'http://localhost:8003/drg/api/tokens/'+this.form.cardNumber;
+            //             //发送登录请求
+            //             this.$axios.get(url).then((res)=>{
+            //                 var res = res.data;
+            //                 if(res.flag==true && res.code==20000){
+            //                     //成功登录 拿到token
+            //                     var token = res.data;
+            //                     //token 5小时的有效期
+            //                     this.$cookie.set('token',token,60*60*5);
+            //                     //跳转到首页
+            //                     this.$router.push({'path':'/Drug/index'});
+            //                     //显示消息框
+            //                     this.$message({
+            //                         message: '登录成功',
+            //                         type: 'success'
+            //                     });
+            //                 }else{
+            //                     //登录失败
+            //                     this.$message({
+            //                         message: '登录失败,账号或密码错误',
+            //                         type: 'error'
+            //                     });
+            //                 }
+            //             });
+            //         }
+            //     });
+            // }
+            //
+
+
+
+
+            //改进后用职工用户密码登陆,from ChargeLogin
             login:function(formName){
                 this.$refs[formName].validate((valid) => {
                     if(valid){
                         //验证通过
                         //构造请求的url
-                        var url = 'http://localhost:8003/drg/api/tokens/'+this.form.cardNumber;
+                        var url = 'http://localhost:8003/doct/api/tokens/'+this.form.userName+"/"+this.form.userPass;
                         //发送登录请求
                         this.$axios.get(url).then((res)=>{
+                            console.log(res);
                             var res = res.data;
                             if(res.flag==true && res.code==20000){
                                 //成功登录 拿到token
@@ -104,7 +128,7 @@
                             }else{
                                 //登录失败
                                 this.$message({
-                                    message: '登录失败,账号或密码错误',
+                                    message: '登录失败,密码或者用户名错误',
                                     type: 'error'
                                 });
                             }
@@ -112,6 +136,12 @@
                     }
                 });
             }
+
+
+
+
+
+
         }
     }
 </script>
