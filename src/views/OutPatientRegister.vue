@@ -303,7 +303,7 @@ export default {
                     //成功申请就诊卡 拿到卡号
                     var number = res.data;
                     this.$alert(number, '您的就诊卡号如下，请牢记就诊卡号', {
-                        confirmButtonText: '点击确定进入挂号登录界面',
+                        confirmButtonText: '确定',
                         callback: action => {
                           this.$message({
                             type: 'info',

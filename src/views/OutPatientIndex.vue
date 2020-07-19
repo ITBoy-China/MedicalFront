@@ -1,195 +1,75 @@
 <template>
     <div class="main">
-        <heads></heads>
-        <div class="container">
+        <heads :title="title" class="my-head"  @quitNumber="getQuitNumberFlag" :pa="pa"></heads>
+        <outpatientContainer class="my-container" @finalFee="getFees" @canUse="getDisabled" ref="child"></outpatientContainer>
+        <settlement class="my-settle" :finalFee="allFees" :canUse="isDisabled" @gua="getFlag"></settlement>
+        <el-dialog title="提示" :visible.sync="quitNumberFlag" width="60%">
             <el-row>
-                <el-col :span="22" :offset="1" class="my-row">
-                    <el-row>
-                        <el-col :span="24">
-                            <div class="my-tag">
-                                <div>基本信息</div>
-                            </div>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="23" class="base-info">
-                            <el-form ref="baseInfoForm" :model="baseInfoForm" label-width="100px" :disabled="true">
-                                <el-row>
-                                    <el-col :span="4">
-                                        <el-form-item label="姓名：">
-                                            <el-input v-model="baseInfoForm.name"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="4">
-                                        <el-form-item label="年龄：">
-                                            <el-input v-model="baseInfoForm.age"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="3">
-                                        <el-form-item label="性别：">
-                                            <el-input v-model="baseInfoForm.sex"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="4">
-                                        <el-form-item label="出生日期：">
-                                            <el-input v-model="baseInfoForm.birth"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="6">
-                                        <el-form-item label="银行卡号：">
-                                            <el-input v-model="baseInfoForm.bankCard"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="3">
-                                        <el-form-item label="性质：">
-                                            <el-input v-model="baseInfoForm.patientFeature"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row>
-                                    <el-col :span="8">
-                                        <el-form-item label="地址：">
-                                            <el-input v-model="baseInfoForm.address"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="7">
-                                        <el-form-item label="身份证号码：">
-                                            <el-input v-model="baseInfoForm.idCard"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="6">
-                                        <el-form-item label="电话号码：">
-                                            <el-input v-model="baseInfoForm.tel"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row>
-                                    <el-col  :span="24">
-                                        <el-form-item label="备注：">
-                                            <el-input v-model="baseInfoForm.remark"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                            </el-form>
-                        </el-col>
-                    </el-row>
+                <el-col>
+                    <el-table :data="outpatientData" style="width: 100%">
+                        <el-table-column prop="outpatientId" label="病历号" width="240px">
+                        </el-table-column>
+                        <el-table-column prop="patientName" label="姓名" width="100px">
+                        </el-table-column>
+                        <el-table-column prop="departName" label="科室" width="80px">
+                        </el-table-column>
+                        <el-table-column prop="name" label="医生姓名" width="100px">
+                        </el-table-column>
+                        <el-table-column prop="registerTime" label="挂号时间">
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">退号</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
                 </el-col>
             </el-row>
-            <el-row>
-                <el-col :span="22" :offset="1" class="my-row my-second">
-                    <el-row>
-                        <el-col :span="24">
-                            <div class="my-tag">
-                                <div>科室信息</div>
-                            </div>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="23" class="base-info">
-                            <el-form ref="doctorInfoForm" :model="doctorInfoForm" label-width="100px">
-                                <el-row>
-                                    <el-col :span="5">
-                                        <el-form-item label="科室：" prop="department">
-                                            <el-select v-model="doctorInfoForm.department" placeholder="请选择所挂科室">
-                                                <el-option label="内科" value="0"></el-option>
-                                                <el-option label="外科" value="1"></el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="5">
-                                        <el-form-item label="医生：" prop="doctor">
-                                            <el-select v-model="doctorInfoForm.doctor" placeholder="请选择医生">
-                                                <el-option label="张三" value="0"></el-option>
-                                                <el-option label="李四" value="1"></el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                            </el-form>
-                        </el-col>
-                    </el-row>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="22" :offset="1" class="my-row my-third">
-                    <el-row>
-                        <el-col :span="24">
-                            <div class="my-tag">
-                                <div>收费信息</div>
-                            </div>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="23" class="base-info">
-                            <el-form ref="feeInfoForm" :model="feeInfoForm" label-width="100px" :disabled="true">
-                                <el-row>
-                                    <el-col :span="5">
-                                        <el-form-item label="挂号费：">
-                                            <el-input v-model="feeInfoForm.numberFee"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="5">
-                                        <el-form-item label="手续费：">
-                                            <el-input v-model="feeInfoForm.proceduresFee"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                            </el-form>
-                        </el-col>
-                    </el-row>
-                </el-col>
-            </el-row>
-        </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="quitNumberFlag = false">取 消</el-button>
+                <el-button type="primary" @click="subQuitNumber()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
 import heads from 'components/header.vue'
+import outpatientContainer from 'components/OutPatientContainer.vue'
+import settlement from 'components/Settlement.vue'
 import Bus from '../assets/js/bus'
 
 export default {
     name:"OutPatientIndex",
     //注册组件
     components:{
-        heads
+        heads,
+        outpatientContainer,
+        settlement
     },
     data(){
         return {
             token:'',
             patientID:'',
-            baseInfoForm: {
-                name: '',
-                age:'',
-                sex:'',
-                birth:'',
-                bankCard:'',
-                patientFeature:'',
-                address:'',
-                idCard:'',
-                tel:'',
-                remark:''
-            },
-            doctorInfoForm:{
-                doctor:'',
-                department:''
-            },
-            feeInfoForm:{
-                //挂号费和手续费
-                numberFee:'',
-                proceduresFee:''
-            }
+            title:'门诊挂号系统',
+            allFees:'0',
+            isDisabled:true,
+            quitNumberFlag:false,
+            outpatientData:[],
+            pa:'patient'
         }
     },
     created(){
         var that = this;
-        Bus.$on('patientId',(val)=>{
-             that.patientID = val;
-             //将id写入cookie
-            that.$cookie.set("id",val);
-        });
         var id = that.$cookie.get("id");
         if(id!=null && id!=undefined){
             that.patientID = id;
+        }else{
+            Bus.$on('patientId',(val)=>{
+                that.patientID = val;
+                //将id写入cookie
+                that.$cookie.set("id",val);
+            });
         }
     },
     mounted(){
@@ -202,18 +82,65 @@ export default {
          }else{
              this.token = tken;
          }
-         //发送数据请求
-         that.dataGet();
+         that.$refs.child.setId(that.patientID);
+         that.$refs.child.dataGet();
     },
     beforeDestroy(){
         Bus.$off('patientId');
     },
     methods:{
-        //获取页面数据
-        dataGet:function(){
+        getFees(val){
+            this.allFees = val;
+        },
+        getDisabled(val){
+            this.isDisabled = val;
+        },
+        getFlag(val){
+            this.$refs.child.setVisable(true);
+        },
+        getQuitNumberFlag(val){
             var that = this;
-            //构造请求url
-            var url = "http://localhost:8003/out/api/patients/"+that.patientID;
+            that.quitNumberFlag = val;
+            that.getAppointments();
+        },
+        subQuitNumber(){
+            var that = this;
+            this.quitNumberFlag = false;
+        },
+        handleDelete(index, row) {
+            var that = this;
+            //获取病历号
+            var id = that.outpatientData[index].outpatientId;
+            //构造请求的url
+            var url = "http://localhost:8003/out/api/outpatients/"+id;
+            var data = {
+                "status":"3"
+            };
+            that.$axios.put(url,JSON.stringify(data),{
+                headers:{
+                    'content-type':'application/json',
+                    'access_token':that.token
+                }
+            }).then((res)=>{
+                res = res.data;
+                if(res.code==20000 && res.flag==true){
+                    that.$message({
+                        message: '退号成功',
+                        type: 'success'
+                    });
+                }else{
+                    that.$message({
+                        message: '退号失败',
+                        type: 'error'
+                    });
+                }
+            });
+            //从前端删除
+            that.outpatientData.splice(index,1);
+        },
+        getAppointments(){
+            var that = this;
+            var url = "http://localhost:8003/out/api/outpatientInfos/patients/"+that.patientID;
             that.$axios.get(url,{
                 headers:{
                     'content-type':'application/json',
@@ -222,20 +149,19 @@ export default {
             }).then((res)=>{
                 res = res.data;
                 if(res.code==20000 && res.flag==true){
-                    //数据渲染
                     var data = res.data;
-                    that.baseInfoForm.name = data.patientName;
-                    that.baseInfoForm.age = data.age;
-                    that.baseInfoForm.sex = data.sex;
-                    that.baseInfoForm.birth = data.birth.split("T")[0];
-                    that.baseInfoForm.bankCard = data.bankCard;
-                    that.baseInfoForm.patientFeature = data.patientFeature;
-                    that.baseInfoForm.address = data.address;
-                    that.baseInfoForm.idCard = data.identityCard;
-                    that.baseInfoForm.tel = data.phone;
-                    that.baseInfoForm.remark = data.remark;
+                    for(var i=0;i<data.length;i++){
+                       data[i].registerTime = data[i].registerTime.split(/[T|+|.]/)[0]+" "+data[i].registerTime.split(/[T|+|.]/)[1];
+                    }
+                    that.outpatientData = data;
+                }else{
+                    that.$message({
+                        message: '挂号数据获取失败',
+                        type: 'error'
+                    });
                 }
-            });
+
+            })
         }
     }
 }
@@ -246,39 +172,23 @@ export default {
         width:100%;
         height:100%;
         background-color: rgb(241,241,241);
+        overflow: hidden;
     }
 
-    .container{
-        position: relative;
+    .my-head{
+        width:100%;
+        height: 10%;
     }
 
-    .my-row{
-        background-color: #fff;
-        margin-top:10px;
-        padding:20px;
-    }
-
-    .my-tag{
-        width:90px;
-        height:34px;
-        color:#fff;
-        text-align: center;
-        background-color: rgb(46,105,235);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .base-info{
-        margin-top:16px;
-    }
-
-    .fee-about{
+    .my-container{
         width: 100%;
-        border-top:1px solid red;
-        background-color: #fff;
-        position: absolute;
-        bottom:0;
-        z-index: 2;
+        height: 75%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    .my-settle{
+        width:100%;
+        height: 15%;
     }
 </style>
