@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-      <heads></heads>
+       <heads :title="title" :pa="pa"></heads>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/Doctor/login' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item><a href="/Doctor/index">挂号情况</a></el-breadcrumb-item>
@@ -149,6 +149,8 @@ export default {
     },
     data(){
         return{
+            title:'医生站',
+            pa:'',
             token:'',
             queryCode: '',
             casedisplay: {

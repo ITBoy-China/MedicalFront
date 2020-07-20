@@ -1,6 +1,6 @@
 <template>
 <div class="main">
-        <heads></heads>
+        <heads :title="title"></heads>
         <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{path: '/Doctor/login' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item><a href="/">挂号情况</a></el-breadcrumb-item>
@@ -128,6 +128,7 @@ export default {
     },
     data(){
         return {
+            title:'医生站',
             token:'',
             patientID:'',
             userName:'',
@@ -228,8 +229,7 @@ export default {
             }
             else if(val1=='就诊'){
                this.$router.push({path:'/Doctor/MedicalList'}) ;
-            }
-             
+            }      
          },
            generateClassName(index){
                if (index == '挂号') {
@@ -264,7 +264,7 @@ export default {
                             that.doctorInfoForm.status=2 ;      
                 } else if(that.doctorInfoForm.status=='退号'){
                     that.doctorInfoForm.status=3;
-                    }
+                }
                 if(that.doctorInfoForm.patientName==''){
                     that.doctorInfoForm.patientName=" ";
                 }

@@ -8,12 +8,7 @@
             </el-row>
             <el-row class="title">
                 <el-col :span="24">
-                    <h1>医生系统</h1>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="24" class="tips">
-                    <span>请输入用户名：</span>
+                    <h1>医生站</h1>
                 </el-col>
             </el-row>
             <el-form ref="form" :model="form" :rules="rules" @submit.native.prevent>
@@ -23,7 +18,7 @@
                             <el-input type="text" placeholder="请输入账号" v-model="form.userName"></el-input>
                         </el-form-item>
                         <el-form-item prop="userPwd">
-                            <el-input type="text" placeholder="请输入密码" v-model="form.userPwd"></el-input>
+                            <el-input type="password" placeholder="请输入密码" v-model="form.userPwd"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -32,11 +27,6 @@
                         <el-form-item>
                             <el-button type="primary" class="my-btn-submit" @click="login('form')">点击以登录</el-button>
                         </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="20" :offset="2" class="link-to">
-                        <router-link to="/OutPatient/register">没有账号？请您注册</router-link>
                     </el-col>
                 </el-row>
             </el-form>
