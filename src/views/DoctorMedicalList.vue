@@ -160,6 +160,7 @@ export default {
             patientFeature:'',
             doctorName:'',
             departName:'',
+            status:''
             },
             medicalList:{
                 doctorName:'',
@@ -230,6 +231,7 @@ export default {
                     that.casedisplay.patientFeature = data.patientFeature;
                     that.casedisplay.doctorName = data.doctorName;
                     that.casedisplay.departName = data.departName;
+                    that.casedisplay.status=data.status;
                     that.medicalList.doctorName = that.casedisplay.doctorName;
                     that.medicalList.patientName = that.casedisplay.patientName;
                     that.clearDrugList();
@@ -348,6 +350,21 @@ export default {
               type: "success",
               message: "处方单创建成功",
             });
+            if(this.casedisplay.status==1){
+                var that=this;
+                var url="http://localhost:8003/doct/api/casedisplay/status/"+that.medicalList.outpatientId;
+                that.$axios.put(url,{},{
+                headers:{
+                    
+                    'access_token':that.token
+                }
+            }).then((res)=>{
+                res = res.data;
+                if (resp.code==20000 && resp.flag==true) {
+                    console.log("success");
+                }
+                });
+            }
             this.clearAll();
             this.clearForm();
           }
