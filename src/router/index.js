@@ -17,6 +17,9 @@ import queryCharge from 'components/queryCharge.vue'
 import returnCharge from 'components/returnCharge.vue'
 import DrugLogin from "../views/DrugLogin";
 import DrugIndex from "../views/DrugIndex";
+import DoctorIndex from 'views/DoctorIndex.vue'
+import DoctorLogin from 'views/DoctorLogin.vue'
+import DoctorMedicalList from 'views/DoctorMedicalList.vue'
 
 const routes = [
   {
@@ -72,6 +75,20 @@ const routes = [
     path:'/Drug/index',
     name:'index',
     component:DrugIndex
+  }, {
+    path:'/Doctor/login',
+    name:'doctorlogin',
+    component:DoctorLogin
+  },
+  {
+    path:'/Doctor/index',
+    name:'doctorindex',
+    component:DoctorIndex
+  },
+  {
+    path:'/Doctor/MedicalList',
+    name:'medicalList',
+    component:DoctorMedicalList
   }
 ]
 
