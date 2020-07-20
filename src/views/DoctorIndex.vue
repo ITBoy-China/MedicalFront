@@ -55,6 +55,8 @@
                                                         <el-date-picker
                                                             v-model="value1"
                                                             type="date"
+                                                            format="yyyy 年 MM 月 dd 日"
+                                                            value-format="yyyy-MM-dd"
                                                             placeholder="选择日期" prop="date">
                                                         </el-date-picker>
                                                     </el-form-item>
@@ -225,7 +227,9 @@ export default {
                 res = res.data;
                 if(res.code==20000 && res.flag==true){that.$router.push({path:'/Doctor/MedicalList'} )}});
             }
-             
+            else if(val1=='就诊'){
+               this.$router.push({path:'/Doctor/MedicalList'}) ;
+            }      
          },
            generateClassName(index){
                if (index == '挂号') {
@@ -260,10 +264,19 @@ export default {
                             that.doctorInfoForm.status=2 ;      
                 } else if(that.doctorInfoForm.status=='退号'){
                     that.doctorInfoForm.status=3;
-                    }
-                
+                }
+                if(that.doctorInfoForm.patientName==''){
+                    that.doctorInfoForm.patientName=" ";
+                }
+                if(that.value==''){
+                    that.value=" ";
+                }
+                if(that.value1==''){
+                    that.value1="2020-07-20";
+                }
                 var url = "http://localhost:8003/doct/api/casedisplay/"+that.doctorInfoForm.doctorName
-                +'/'+that.doctorInfoForm.patientName+'/2020-07-12';
+                +'/'+that.doctorInfoForm.patientName+'/'+that.value+'/'+that.value1;
+                console.log(that.value1);
                 console.log(url);
                  that.$axios.get(url,{
                 headers:{
